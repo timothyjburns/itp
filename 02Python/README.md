@@ -41,3 +41,5 @@ Not very much... I knew what a list is, I suppose, but that's about it!
 ### BNI
 
 Lists can be created using square brackets. These lists are mutable, meaning they can be changed after being created. Lists work very differently to strings. For example, creating two identical lists and calling them "a" and "b" will not cause a=b, but doing that with strings instead *will* cause a=b.
+
+[Python Reading Assignment](https://github.com/timothyjburns/itp/tree/main/02Python)
