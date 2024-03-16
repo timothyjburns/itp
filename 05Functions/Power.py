@@ -1,5 +1,5 @@
 def print_graph(n):
-    for i in range(n + 1):
+    for i in range(n):
         print("*", end='')
     print('')
 
