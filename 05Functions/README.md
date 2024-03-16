@@ -10,3 +10,16 @@ def print_graph(n):
         print("*", end='')
         print('')
 ```
+*PROBLEM* It prints a line after each asterisk, not at the end of the sequence.
+
+*SOLUTION* INDENTATION IS IMPORTANT. I changed it to look like this, and added a prompt for n:
+
+```
+def print_graph(n):
+    for i in range(n + 1):
+        print("*", end='')
+    print('')
+
+n = int(input("Enter an integer number: "))
+print_graph(n)
+```
