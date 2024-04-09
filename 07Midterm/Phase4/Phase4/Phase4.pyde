@@ -19,7 +19,7 @@ def drawObject(x,y,s):
     pop()
 
 def draw():
-    square_grid = 3
+    square_grid = 4
     step = (width / square_grid)
     s = float(4) / square_grid
     for x in range(0, width, step):
