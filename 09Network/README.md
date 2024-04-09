@@ -2,7 +2,7 @@
 
 I was in a team with Ryan and Maya. Ryan was in charge of the audio and video assets. Maya was in charge of the CSS file. I hosted the website on my GitHub.io page, and collated all the different parts of the code together. [Here's the link!](timothyjburns.github.io)
 
-Some of the troubleshooting included figuring out how to centre the text and images ("text-align: center;" in the CSS file), and how to format a paragraph with line breaks ("<br>" in the text). I also resized the fonts using percentage of visual width ("font-size: xvw" in the CSS file).
+Some of the troubleshooting included figuring out how to centre the text and images (```text-align: center;``` in the CSS file), and how to format a paragraph with line breaks (```<br>``` in the text). I also resized the fonts using percentage of visual width (```font-size: xvw``` in the CSS file).
 
 Both Maya and Ryan worked hard and were successful in all their projects, and gave me their sections of code with ample time for me to piece it together. Ryan actually ended up taking the image creation from me as the AI image creator I was using didn't help me much.
 
