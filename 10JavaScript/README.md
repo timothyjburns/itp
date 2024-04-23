@@ -20,3 +20,10 @@ for i in range(size):
         row += '#' if (i + j) % 2 == 0 else ' '
     print(row)
 ```
+- Started in JavaScript, had to Google the function that returns an integer from the user input ("parseInt")
+
+- The JavaScript equivalent of ```for i in range()``` is ```for (let i = 0, i < size, i++)```
+
+- JavaScript is waaaay more complicated (right now at least, because I'm used to Python) when it comes to syntax. There were lots of typos with curly brackets and semi-colons in the wrong place, so I needed to go through the code very carefully to correct them all.
+
+For example, I had the "console(log)" function inside a curly bracket loop and had to take it out for the nested loop to work properly. It seems that curly brackets have more power than indentation in JavaScript.
