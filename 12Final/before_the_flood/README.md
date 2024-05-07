@@ -69,3 +69,11 @@ I'd also like to develop the personality of the hero character, allowing them to
 ### Story
 
 I just want to finish the story! There's a long way to go yet.
+
+## References
+
+[Tkinter Help](https://realpython.com/python-gui-tkinter/)
+
+[Tkinter ScrolledText Widget](https://www.geeksforgeeks.org/python-tkinter-scrolledtext-widget/)
+
+[Class Creation (Whole Tutorial Used)](https://www.youtube.com/watch?v=cM_ocyOrs_k)
