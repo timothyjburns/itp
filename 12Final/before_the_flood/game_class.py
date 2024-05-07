@@ -15,7 +15,6 @@ class Game:
             for entity in [self.hero, self.enemy]:
                 # Update the line number where the new health bar will be drawn
                 if entity.health_bar.line_number is not None:
-                    print(entity.health_bar.line_number)
                     lines_to_delete = 3 if entity.critical_hit else 2
                     self.gui_output.delete(f"{entity.health_bar.line_number - 1}.0", f"{entity.health_bar.line_number + lines_to_delete}.end-1c")
 

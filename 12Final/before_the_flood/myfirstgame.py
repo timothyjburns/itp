@@ -1,5 +1,5 @@
 from gui import create_gui
-from character_class import Character, Weapon, Hero, Leviathan, HealthBar, Rat
+from character_class import Character, Weapon, Hero, Leviathan, HealthBar, Rat, NPC
 from game_class import Game
 from pygame import mixer
 
@@ -158,7 +158,7 @@ def intro_leviathan_battle(response, player_name):
     if response == "fight":
         insert_and_scroll("And so it begins. You draw your sword and charge the beast.\n\n")
         wait()
-        hero = Hero(player_name, 100, 0.2, Weapon("Blade of the Chosen", "Sword", 20, 3000), gui_output=output_box)
+        hero = Hero(player_name, 100, 0.2, 2, Weapon("Blade of the Chosen", "Sword", 20, 3000), gui_output=output_box)
         enemy = Leviathan("Leviathan", 999, 0.4, Weapon("Tentacles", "Body", 30, 2000), gui_output=output_box)
         game = Game(hero, enemy, gui_output=output_box)
         while True:
@@ -168,13 +168,16 @@ def intro_leviathan_battle(response, player_name):
             if game.hero.health <= 0 or game.enemy.health <= 0:
                 if game.hero.health <= 0:
                     hero_defeat_text = '''
-With every whip of the monster's tentacles, your body grows weaker. You fall to your knees, your sword slipping from your grasp. The beast looms over you, its jaws open wide, ready to swallow you whole. Its breath reeks of stale coffee and last night's wine. Its slimy tentacles grasp your shoulders and start shaking you, while from deep in its cavernous throat, you hear it call your name...\n\n
+With every whip of the monster's tentacles, your body grows weaker. You fall to your knees, your sword slipping from your grasp. The beast looms over you, its jaws open wide, ready to swallow you whole. 
+Its breath reeks of stale coffee and last night's wine. Its slimy tentacles grasp your shoulders and start shaking you, while from deep in its cavernous throat, you hear it call your name...\n\n
 '''
                     insert_and_scroll(hero_defeat_text)
                     wait()
+                    wait()
                     insert_and_scroll(f'"{player_name}... "\n\n')
                     wait()
                     insert_and_scroll(f'"{player_name}... "\n\n')
+                    wait()
                     capitalised_player_name = player_name.upper()
                     insert_and_scroll(f'"{capitalised_player_name}!!"\n\n', "bold")
                     wait()
@@ -206,7 +209,7 @@ With every whip of the monster's tentacles, your body grows weaker. You fall to 
 
 def chapter_one_wake_up(response, player_name):
     if response == "happening":
-        insert_and_scroll('You: "What\'s going on? Who are everywhere?"\n\n')
+        insert_and_scroll('You: "What\'s going on? What are everywhere?"\n\n')
         wait()
         insert_and_scroll(f'Mother: "RATS!"\n\n')
         wait()
@@ -216,7 +219,7 @@ def chapter_one_wake_up(response, player_name):
         wait()
         insert_and_scroll(f'Mother: "Take these, {player_name}, and squash those revolting creatures before they nibble the house to pieces!"\n\n')
         bold_text("Are you feeling brave? Do you take the gear, try to persuade your mother to do it herself, or flee back to bed?\n\n", ["take", "persuade", "flee"])
-        input_box.bind("<Return>", lambda event: handle_response(chapter_one_rats, player_name))
+        input_box.bind("<Return>", lambda event: handle_response(chapter_one_rats, event, player_name))
     elif response == "dreaming":
         insert_and_scroll('You: "Begone, foul beast! My name is not yours to be uttered!"\n\nYou push your mother\'s arms away and roll over.\n\n')
         wait()
@@ -225,7 +228,7 @@ def chapter_one_wake_up(response, player_name):
         insert_and_scroll('And with that, you find yourself suddenly on the floor, blanket ripped away from you. You thank the skies for your nightclothes.\n\n')
         wait()
         bold_text("One day, you'll find out what happens next. But this is not that day, so let's try again. Do you want to find out what's happening or keep dreaming?\n\n", ["happening", "dreaming?\n\n"])
-        input_box.bind("<Return>", lambda event: handle_response(chapter_one_wake_up, player_name))
+        input_box.bind("<Return>", lambda event: handle_response(chapter_one_wake_up, event, player_name))
 
 def chapter_one_rats(response, player_name):
     if response == "take":
@@ -233,7 +236,8 @@ def chapter_one_rats(response, player_name):
         insert_and_scroll('You shiver a little - *rats* - and grab the rolling pin and apron, then descend down the dark basement stairs.\nThe squeaking grows louder with every step. Your foot lands on something that squishes under your weight.\n\n')
         wait()
         insert_and_scroll('Its friends don\'t seem pleased with you.\n\n')
-        hero = Hero(player_name, 20, 0.05, Weapon("Rolling Pin", "Tool", 2, 1), gui_output=output_box)
+        wait()
+        hero = Hero(player_name, 20, 0.05, charisma=2, weapon=Weapon("Rolling Pin", "Tool", 2, 1), gui_output=output_box)
         enemy = Rat("Rat Swarm", 15, 0.1, Weapon("Teeth", "Body", 1, 1), gui_output=output_box)
         game = Game(hero, enemy, gui_output=output_box)
         while True:
@@ -254,12 +258,120 @@ You can't seem to find your groove with this rolling pin. It seems you didn't in
                 break
     elif response == "persuade":
         wait()
-        bold_text('How will you convince her? Do you appeal to her maternal instincts, call her a coward or attempt a bribe?\n\n', ["instincts", "coward", "bribe?\n\n"])
+        bold_text('How will you convince her? Do you appeal to her maternal instincts, call her a coward or attempt a bribe?\n\n', ["instincts,", "coward", "bribe?\n\n"])
+        input_box.bind("<Return>", lambda event: handle_response(chapter_one_persuade_mum, event, player_name))
     elif response == "flee":
         wait()
         insert_and_scroll('You: "Nope!"\n\nYou turn and sprint back to your room, slamming the door behind you.\n\n')
 
+def chapter_one_persuade_mum(response, player_name):
+    mum = NPC("Mother", 20, openness=5, gui_output=output_box)
+    hero = Hero(player_name, 20, 0.05, charisma=2, weapon=Weapon("Rolling Pin", "Tool", 2, 1), gui_output=output_box)
+    if response == "instincts":
+        insert_and_scroll('You: "But Mother, I\'m so afraid! I need you to protect me, not the other way around!"\n\n')
+        success = hero.persuade(mum, 2.6)
+        if success:
+            wait()
+            insert_and_scroll('Mother: "... Ugh, okay. Wish me luck, if you would. Not like you can do much else..."\n\n')
+            wait()
+            insert_and_scroll('You watch your indomitable mother descend the stairs. You hear a flurry of activity and the occasional squeak, then silence.\n\n')
+        else:
+            wait()
+            insert_and_scroll('Mother" Hah! You wish! Now get down there."\n\n')
+            wait()
+            insert_and_scroll('You shiver a little - *rats* - and grab the rolling pin and apron, then descend down the dark basement stairs.\nThe squeaking grows louder with every step. Your foot lands on something that squishes under your weight.\n\n')
+            wait()
+            insert_and_scroll('Its friends don\'t seem pleased with you.\n\n')
+            wait()
+            hero = Hero(player_name, 20, 0.05, charisma=2, weapon=Weapon("Rolling Pin", "Tool", 2, 1), gui_output=output_box)
+            enemy = Rat("Rat Swarm", 15, 0.1, Weapon("Teeth", "Body", 1, 1), gui_output=output_box)
+            game = Game(hero, enemy, gui_output=output_box)
+            while True:
 
+                game.battle()
+                wait()
+                if game.hero.health <= 0 or game.enemy.health <= 0:
+                    if game.hero.health <= 0:
+                        hero_defeat_text = '''
+You can't seem to find your groove with this rolling pin. It seems you didn't inherit the dream-you's skills. You head gets faint from blood loss, and you slump to the ground, barely conscious of the swarm of rodents preparing for an easy meal.\n\n
+'''
+                        insert_and_scroll(hero_defeat_text)
+                        wait()
+                        insert_and_scroll("The End.\n\n", "bold")
+                    
+                    if game.enemy.health <= 0:
+                        insert_and_scroll("\nYou've spent many hours honing your skills at the town fayre, and it shows. The rats are no match for your rolling pin.\n\n")
+                    break
+    elif response == "coward":
+        insert_and_scroll('You: "Hah! You, afraid of rats? I didn\'t take you for a coward, Mother."\n\n')
+        success = hero.persuade(mum, 0.5)
+        if success:
+            wait()
+            insert_and_scroll('Mother: "Why, you cheeky... Fine! I\'ll do it myself!"\n\n')
+            wait()
+            insert_and_scroll('You watch your indomitable mother descend the stairs. You hear a flurry of activity and the occasional squeak, then silence.\n\n')
+        else:
+            wait()
+            insert_and_scroll('Mother: "Nice try, but I invented that trick. Now get down there before I turn this pin on you!"\n\n')
+            wait()
+            insert_and_scroll('You shiver a little - *rats* - and grab the rolling pin and apron, then descend down the dark basement stairs.\nThe squeaking grows louder with every step. Your foot lands on something that squishes under your weight.\n\n')
+            wait()
+            insert_and_scroll('Its friends don\'t seem pleased with you.\n\n')
+            wait()
+            hero = Hero(player_name, 20, 0.05, charisma=2, weapon=Weapon("Rolling Pin", "Tool", 2, 1), gui_output=output_box)
+            enemy = Rat("Rat Swarm", 15, 0.1, Weapon("Teeth", "Body", 1, 1), gui_output=output_box)
+            game = Game(hero, enemy, gui_output=output_box)
+            while True:
+
+                game.battle()
+                wait()
+                if game.hero.health <= 0 or game.enemy.health <= 0:
+                    if game.hero.health <= 0:
+                        hero_defeat_text = '''
+You can't seem to find your groove with this rolling pin. It seems you didn't inherit the dream-you's skills. You head gets faint from blood loss, and you slump to the ground, barely conscious of the swarm of rodents preparing for an easy meal.\n\n
+'''
+                        insert_and_scroll(hero_defeat_text)
+                        wait()
+                        insert_and_scroll("The End.\n\n", "bold")
+                    
+                    if game.enemy.health <= 0:
+                        insert_and_scroll("\nYou've spent many hours honing your skills at the town fayre, and it shows. The rats are no match for your rolling pin.\n\n")
+                    break
+    elif response == "bribe":
+        insert_and_scroll('You: "Uhhh... How about we make a deal, Mum? You go down there and deal with that, and I\'ll... clean the house for a month!"\n\n')
+        success = hero.persuade(mum, 1.2)
+        if success:
+            wait()
+            insert_and_scroll('Mother: "... Oh, alright. Good deal. But you\'d better keep your end of the bargain!"\n\n')
+            wait()
+            insert_and_scroll('You watch your indomitable mother descend the stairs. You hear a flurry of activity and the occasional squeak, then silence.\n\n')
+        else:
+            wait()
+            insert_and_scroll('Mother: "Clean the house, you say?" She smiles a little too sweetly. "Why don\'t you start with the basement?"\n\n')
+            wait()
+            insert_and_scroll('You shiver a little - *rats* - and grab the rolling pin and apron, then descend down the dark basement stairs.\nThe squeaking grows louder with every step. Your foot lands on something that squishes under your weight.\n\n')
+            wait()
+            insert_and_scroll('Its friends don\'t seem pleased with you.\n\n')
+            wait()
+            hero = Hero(player_name, 20, 0.05, charisma=2, weapon=Weapon("Rolling Pin", "Tool", 2, 1), gui_output=output_box)
+            enemy = Rat("Rat Swarm", 15, 0.1, Weapon("Teeth", "Body", 1, 1), gui_output=output_box)
+            game = Game(hero, enemy, gui_output=output_box)
+            while True:
+
+                game.battle()
+                wait()
+                if game.hero.health <= 0 or game.enemy.health <= 0:
+                    if game.hero.health <= 0:
+                        hero_defeat_text = '''
+You can't seem to find your groove with this rolling pin. It seems you didn't inherit the dream-you's skills. You head gets faint from blood loss, and you slump to the ground, barely conscious of the swarm of rodents preparing for an easy meal.\n\n
+'''
+                        insert_and_scroll(hero_defeat_text)
+                        wait()
+                        insert_and_scroll("The End.\n\n", "bold")
+                    
+                    if game.enemy.health <= 0:
+                        insert_and_scroll("\nYou've spent many hours honing your skills at the town fayre, and it shows. The rats are no match for your rolling pin.\n\n")
+                    break
 
 main()
 

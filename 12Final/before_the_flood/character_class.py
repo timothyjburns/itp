@@ -32,6 +32,11 @@ class Character:
         target.health = max(0, target.health)
         target.health_bar.update()
 
+    def persuade(self, target, persuasion_technique: float) -> bool:
+        success = self.charisma * persuasion_technique > target.openness
+        return success
+
+
 class Weapon:
     def __init__(self, 
                  name: str, 
@@ -49,11 +54,13 @@ class Hero(Character):
                  name: str, 
                  health: int,
                  crit_chance: float,
+                 charisma: int,
                  weapon: Weapon,
                  gui_output=None,
                  ) -> None:
         super().__init__(name, health, crit_chance, gui_output)
         self.weapon = weapon
+        self.charisma = charisma
         self.health_bar = HealthBar(self, colour="green", gui_output=gui_output)
 
 class Leviathan(Character):
@@ -79,6 +86,17 @@ class Rat(Character):
         super().__init__(name, health, crit_chance, gui_output)
         self.weapon = weapon
         self.health_bar = HealthBar(self, colour="red", gui_output=gui_output)
+
+class NPC(Character):
+    def __init__(self, 
+                 name: str, 
+                 health: int,
+                 openness: int,
+                 gui_output=None,
+                 ) -> None:
+        super().__init__(name, health, gui_output)
+        self.openness = openness
+        self.health_bar = HealthBar(self, colour="yellow", gui_output=gui_output)
 
 class HealthBar:
     symbol_remaining: str = "█"
@@ -123,6 +141,3 @@ class HealthBar:
 blade_of_chosen = Weapon(name="Blade of the Chosen", weapon_type="sword", damage=20, value=1000)
 leviathan_tentacle = Weapon(name="Tentacle", weapon_type="body", damage=30, value=2000)
 leviathan_mandible = Weapon(name="Mandible", weapon_type="body", damage=40, value=3000)
-
-hero = Hero(name="Hero", health=100, crit_chance=0.2, weapon=blade_of_chosen)
-leviathan = Leviathan(name="Leviathan", health=999, crit_chance=0.4, weapon=leviathan_tentacle)
